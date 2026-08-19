@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+.venv/
+venv/
+
+# Excel/Office temp
+~$*.xlsx
+~$*.docx
+*.tmp
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# OpenCode / editor
+.opencode/
+.idea/
+.vscode/
