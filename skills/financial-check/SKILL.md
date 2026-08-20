@@ -28,8 +28,9 @@ description: 财务报表与申报台账的真实性核对链验证。生成/更
 10. 报表中无数据的科目也要列示填 0（"没有的项目在表格里也要出现"）
 
 ## 操作步骤
-1. 读取原始银行流水 XLSX（活期账户明细 sheet，交易行 = 有"交易时间"的行）
-2. 运行验证脚本：
+1. **识别发票票种**：对每张发票 PDF 运行 `scripts/invoice_detect.py`（专票/普票/数电票/红字/铁路客票/回单），规则见 docs/invoice-recognition.md；未确定票种不得按默认处理
+2. 读取原始银行流水 XLSX（活期账户明细 sheet，交易行 = 有"交易时间"的行）
+3. 运行验证脚本：
    ```powershell
    $env:PYTHONIOENCODING="utf-8"
    python "<本skill路径>/scripts/verify_chain.py" `
@@ -40,8 +41,8 @@ description: 财务报表与申报台账的真实性核对链验证。生成/更
    ```
    - `--debit/--credit/--balance`：当期期望值（按当期实际核对填入，禁编造）
    - `--taxbook`：含公式的 xlsx 台账，自动调用 LibreOffice 重算后校验
-3. 逐个 sheet 抽查：发票明细金额与 PDF 一致、资产负债表平衡、利润表本期 = 现金流量净额
-4. 全部 PASS 才可交付；任一 FAIL 先核对原始文件再重跑
+4. 逐个 sheet 抽查：发票明细金额与 PDF 一致、票种归类正确（专票税额可抵/不可抵按身份）、资产负债表平衡、利润表本期 = 现金流量净额
+5. 全部 PASS 才可交付；任一 FAIL 先核对原始文件再重跑
 
 ## 配置
 - Python：任意含 openpyxl 的 Python 3（`pip install openpyxl`）
